@@ -28,9 +28,11 @@
 
     <!-- Hero Section -->
     <section class="hero" id="home">
-        <video autoplay muted loop class="hero-video">
+        <video autoplay muted loop playsinline class="hero-video">
             <source src="./images/video.mp4" type="video/mp4">
+            Your browser does not support the video tag.
         </video>
+        <img src="./images/hero-fallback.jpg" alt="LUNA's Apparel" class="hero-video-fallback">
         <div class="hero-content">
             <h1>Elevate Your Everyday Style</h1>
             <p>Discover timeless pieces crafted with care for the modern individual. Sustainable materials, exceptional quality, and effortless elegance.</p>
@@ -54,29 +56,24 @@
                 <div class="collections-slide">
                     <img src="./images/clothing.jpg" alt="Spring Collection">
                     <div class="collections-slide-caption">
-                        <!-- <h3>Spring 2025 Collection</h3> -->
                         <p>Lightweight fabrics and fresh colors for the new season</p>
                     </div>
                 </div>
                 <div class="collections-slide">
                     <img src="./images/Ankara Fabric.jpeg" alt="Summer Collection">
                     <div class="collections-slide-caption">
-                        <!-- <h3>Summer Essentials</h3> -->
                         <p>Breezy styles for warm days and cool nights</p>
                     </div>
                 </div>
                 <div class="collections-slide">
                     <img src="./images/image2.jpg" alt="Autumn Collection">
-                    
                     <div class="collections-slide-caption">
-                        <!-- <h3>Autumn Vibes</h3> -->
                         <p>Rich textures and warm tones</p>
                     </div>
                 </div>
                 <div class="collections-slide">
                     <img src="./images/sample image.JPG" alt="Winter Collection">
                     <div class="collections-slide-caption">
-                        <!-- <h3>Winter Warmth</h3> -->
                         <p>Luxurious layers for all weather comfort</p>
                     </div>
                 </div>
@@ -151,7 +148,7 @@
                 </div>
             </div>
             <div class="about-image">
-                <img src="./images/Ore-image.jpg" alt="About LUNA's Apparel">
+                <img src="./images/" alt="About LUNA's Apparel">
             </div>
         </div>
     </section>
@@ -167,9 +164,6 @@
                     The quality of LUNA's clothing is unmatched. I've had my favorite Gown for two years and it still looks brand new. Worth every penny!
                 </div>
                 <div class="testimonial-author">
-                    <!-- <div class="author-image">
-                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sarah J.">
-                    </div> -->
                     <div class="author-info">
                         <h4>Oreoluwa</h4>
                         <p>Loyal Customer</p>
@@ -181,9 +175,6 @@
                     As someone who values sustainable fashion, I appreciate LUNA's commitment to ethical production. Their pieces are staples in my wardrobe.
                 </div>
                 <div class="testimonial-author">
-                    <!-- <div class="author-image">
-                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Michael T.">
-                    </div> -->
                     <div class="author-info">
                         <h4>Adedayo</h4>
                         <p>Fashion Blogger</p>
@@ -195,9 +186,6 @@
                     The fit and comfort of LUNA's clothing is exceptional. I always receive compliments when I wear their pieces. Highly recommend!
                 </div>
                 <div class="testimonial-author">
-                    <!-- <div class="author-image">
-                        <img src="./images/" alt="Emma R.">
-                    </div> -->
                     <div class="author-info">
                         <h4>osunkoya.A</h4>
                         <p>Customer</p>
@@ -245,8 +233,6 @@
             <div class="footer-links">
                 <h3>Customer Service</h3>
                 <ul>
-                    <!-- <li><a href="#">Shipping Policy</a></li> -->
-                    <!-- <li><a href="#">Returns & Exchanges</a></li> -->
                     <li><a href="#">Size Guide</a></li>
                     <li><a href="#">FAQs</a></li>
                     <li><a href="#">Privacy Policy</a></li>
@@ -281,6 +267,43 @@
             const header = document.getElementById('header');
             header.classList.toggle('scrolled', window.scrollY > 50);
         });
+        
+        // Video fallback for mobile devices
+        function checkVideoSupport() {
+            const video = document.querySelector('.hero-video');
+            const fallback = document.querySelector('.hero-video-fallback');
+            
+            // Check if video can play (some mobile browsers don't autoplay even with playsinline)
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            
+            if (isMobile) {
+                // For mobile, we'll show the fallback image by default
+                video.style.display = 'none';
+                fallback.style.display = 'block';
+                
+                // Try to play the video (some newer mobile devices might support it)
+                const promise = video.play();
+                
+                if (promise !== undefined) {
+                    promise.then(_ => {
+                        // Video can play, show video and hide fallback
+                        video.style.display = 'block';
+                        fallback.style.display = 'none';
+                    }).catch(error => {
+                        // Video cannot play, keep fallback visible
+                        video.style.display = 'none';
+                        fallback.style.display = 'block';
+                    });
+                }
+            } else {
+                // For desktop, show video by default
+                video.style.display = 'block';
+                fallback.style.display = 'none';
+            }
+        }
+        
+        // Check video support when page loads
+        window.addEventListener('load', checkVideoSupport);
         
         // Collections Carousel
         document.addEventListener('DOMContentLoaded', function() {
